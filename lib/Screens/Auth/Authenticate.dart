@@ -24,5 +24,9 @@ class _Authicate extends State<Authenticate> {
       return Container(child: Register(toggleView: toggleView),);
       
     }
+    
+   
+
+    
   }
 

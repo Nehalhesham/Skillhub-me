@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pfk/Screens/Auth/sign_in.dart';
 import 'package:pfk/Services/auth.dart';
+
+import 'package:pfk/Screens/Home/home.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -14,45 +17,104 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error = '';
+  String phone='';
+  String name='';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 253, 248, 244) ,
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 9, 51, 91),
-        elevation: 0.0,
-        title: Text("Kobtan"),
-        actions: <Widget>[
-          FlatButton.icon(
-              onPressed: () {
-                widget.toggleView();
-              },
-              icon: Icon(Icons.account_circle),
-              
-              label: Text("Sign in"), textColor: Color.fromARGB(255, 253, 248, 244))
-        ],
-      ),
-      body: Container(
+     
+      body: 
+     
+       Container(
         
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              'Images/greybackground.png'),
+          fit: BoxFit.fill,
+        ),
+        shape: BoxShape.rectangle,
+      ),
+       
+      
+         
+      padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 50.0),
+     child:  
+     
+         Form(
             key: _formKey,
             child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                  Row(
+                
+                  children: <Widget>[
+                    Container(
+      
+     margin: EdgeInsets.only(top: 30.0, bottom: 9.0,left: 0.0,right: 0.0),
+     child: Image.asset('Images/skillhublogo-removebg-preview (1).png',width:80, alignment:Alignment.center)
+      ,
+      ),
+        Container(
+                   alignment: Alignment.center ,
+                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                   margin: new EdgeInsets.symmetric(vertical:60.0),
+                  child:
+                new Text('SkillHub' ,style: new TextStyle(
+                  fontSize: 47.0,
+                    
+                  color: Color.fromARGB(255,255,255, 255),
+                  fontFamily: 'bold',
+                  
+                )),)]),
+                 SizedBox(
+                  height: 20.0,
+                ),
+                 TextFormField(
+                  decoration: InputDecoration(
+                    
+                    hintText: 'User Name',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
+                    )
+                    
+                  ), 
+                  validator: (val) {
+                    if (val.isEmpty)
+                      return "Please enter a User Name";
+                    else
+                      return null;
+                  },
+                  
+                  
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 20.0,
                 ),
-                TextFormField(
-                  
+                 TextFormField(
+                  decoration: InputDecoration(
+                    
+                    hintText: 'Email',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
+                    )
+                    
+                  ), 
                   validator: (val) {
                     if (val.isEmpty)
                       return "Please enter an email";
                     else if (!val.contains('@') || !val.contains('.'))
-                      return "enter a valid email";
+                      return "Please enter a valid email";
                     else
                       return null;
                   },
+                  
                   
                   onChanged: (val) {
                     setState(() {
@@ -60,10 +122,45 @@ class _RegisterState extends State<Register> {
                     });
                   },
                 ),
+                 SizedBox(
+                  height: 20.0,
+                ),
+                 TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Mobile Numer',
+                     enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
+                    )
+                    
+                    
+                  ),
+                  
+                  validator: (val) {
+                    if (val.isEmpty)
+                      return "Please enter Mobile Number";
+                    else if (val.length< 11)
+                      return "enter a valid mobile number";
+                    else
+                      return null;
+                  },
+                   onChanged: (val) {
+                    setState(() {
+                      phone = val;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 20.0,
                 ),
-                TextFormField(
+               TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                     enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
+                    )
+                    
+                    
+                  ),
                   
                   validator: (val) {
                     if (val.isEmpty)
@@ -88,6 +185,7 @@ class _RegisterState extends State<Register> {
                     if (_formKey.currentState.validate()) {
                       dynamic result = await _auth.registerWithEmailPassword(
                           email, password);
+                          
                       if (result == null) {
                         setState(() {
                           error = "Please enter a valid email";
@@ -95,6 +193,9 @@ class _RegisterState extends State<Register> {
                       }
                       else { 
                         error ='';
+                         Navigator.push(
+                   context,
+               MaterialPageRoute(builder: (context) => Home()));
                       }
                     }
                   },
@@ -117,7 +218,7 @@ class _RegisterState extends State<Register> {
                 )
               ],
             )),
-      ),
-    );
+      ));
+    
   }
 }

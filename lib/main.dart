@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pfk/Screens/Auth/register.dart';
+import 'package:pfk/Screens/Home/welcome.dart';
 import 'package:pfk/Screens/Home/wrapper.dart';
 import 'package:pfk/Services/auth.dart';
 import 'package:provider/provider.dart';
@@ -18,3 +20,6 @@ class MyApp extends StatelessWidget {
         ));
   }
 }
+
+///////////////////
+

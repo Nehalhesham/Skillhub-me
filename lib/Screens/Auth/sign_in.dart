@@ -1,6 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pfk/Services/auth.dart';
+import 'package:pfk/Screens/Home/home.dart';
+import 'package:pfk/Screens/Home/ForgotScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -22,6 +28,7 @@ final AuthServices _auth = AuthServices();
 class _SignIn extends State<SignIn> {
   @override
   final AuthServices _authServices = AuthServices();
+ 
   Widget build(BuildContext context) {
     return Scaffold(
       
@@ -35,7 +42,7 @@ class _SignIn extends State<SignIn> {
         decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-              'Images/Abstract Dark Blue Light In Center Photography Backdrop J-0420.jpg'),
+              'Images/greybackground.png'),
           fit: BoxFit.fill,
         ),
         shape: BoxShape.rectangle,
@@ -50,21 +57,31 @@ class _SignIn extends State<SignIn> {
        Form(
           
 
-                    key: _formKey,
+             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                Row(
+                
+                  children: <Widget>[
+                    Container(
+      
+     margin: EdgeInsets.only(top: 30.0, bottom: 9.0,left: 0.0,right: 0.0),
+     child: Image.asset('Images/skillhublogo-removebg-preview (1).png',width:80, alignment:Alignment.center)
+      ,
+      ),
                 Container(
                    alignment: Alignment.center ,
+                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                    margin: new EdgeInsets.symmetric(vertical:60.0),
                   child:
                 new Text('SkillHub' ,style: new TextStyle(
-                  fontSize: 50.0,
+                  fontSize: 47.0,
                     
-                  color: Color.fromARGB(255,253, 248, 224),
+                  color: Color.fromARGB(255,255,255, 255),
                   fontFamily: 'bold',
                   
-                )),),
+                )),)]),
                  
                 SizedBox(
                   height: 10.0,
@@ -74,7 +91,7 @@ class _SignIn extends State<SignIn> {
                     
                     hintText: 'Email',
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color:Color.fromARGB(255,253, 248, 224),width: 2.0)
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
                     )
                     
                   ),
@@ -101,7 +118,7 @@ class _SignIn extends State<SignIn> {
                   decoration: InputDecoration(
                     hintText: 'Password',
                      enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color:Color.fromARGB(255,253, 248, 224),width: 2.0)
+                      borderSide: BorderSide(color:Color.fromARGB(255,255,255, 255),width: 2.0)
                     )
                     
                     
@@ -128,13 +145,16 @@ class _SignIn extends State<SignIn> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       dynamic result =
-                          await _auth.signInWithEmailPassword(email, password);
-                      if (result == null) {
+                   await _auth.signInWithEmailPassword(email, password);
+                   
+              if (result == null) {
                         setState(() {
                           error = "Authentication failed ";
                         });
                       } else {
-                        
+                   Navigator.push(
+                   context,
+               MaterialPageRoute(builder: (context) => Home()));
                         error = '';
                         
                       }
@@ -143,37 +163,54 @@ class _SignIn extends State<SignIn> {
                   color: Color.fromARGB(255, 9, 51, 91),
                   child: Text(
                     "Sign in ",
-                    style: TextStyle( color: Color.fromARGB(255,253, 248, 224),
+                    style: TextStyle( color: Color.fromARGB(255,255,255, 255),
                   fontFamily: 'bold',),
                   ),
                 ), 
                  SizedBox(
                   height: 12.0,
                 ),
+              
+         
                 Text(
                   error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  style: TextStyle(color: Colors.red, fontSize: 12.0),
                 )
              ,
+             Row(
+                   children: <Widget>[
+                     new Container(
+                        margin: const EdgeInsets.only(left: 85.0, right: 20.0,top:0),
+         
+                child:InkWell(
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildConext)=>ForgotScreen()));
+                  },
+                
+                 child:Text('Forgotten Password?',  style: TextStyle(color: Colors.white, fontSize: 14.0))
+                     )
+                     )],
+             ),
+
               Row(children: <Widget>[
               
             Expanded(
               child: new Container(
                   margin: const EdgeInsets.only(left: 10.0, right: 15.0),
                   child: Divider(
-                    color: Color.fromARGB(255,253, 248, 224),
+                    color: Color.fromARGB(255,255,255, 255),
                     height: 50,
                   )),
             ),
  
-           Text("OR",style: TextStyle( color: Color.fromARGB(255,253, 248, 224)),),
+           Text("OR",style: TextStyle( color: Color.fromARGB(255,255,255, 255)),),
           
  
             Expanded(
               child: new Container(
                   margin: const EdgeInsets.only(left: 15.0, right: 10.0),
                   child: Divider(
-                    color: Color.fromARGB(255,253, 248, 224),
+                    color: Color.fromARGB(255,255,255, 255),
                     height: 50,
                   )),
             ),
@@ -182,16 +219,12 @@ class _SignIn extends State<SignIn> {
                mainAxisAlignment: MainAxisAlignment.center,   crossAxisAlignment: CrossAxisAlignment.center,
               
               children: <Widget>[
-             RaisedButton(
-                  onPressed: () {
-                  },
-                  color: Color.fromARGB(255, 9, 51, 91),
-                  child: Text(
-                    "Login With Facebook ",
-                    style: TextStyle( color: Color.fromARGB(255,253, 248, 224),
-                  fontFamily: 'bold',),
-                  ),
-                ), 
+                FacebookSignInButton(onPressed: () async{
+                     
+                   await _auth.LoginWithFacebook();
+
+                })
+            
                          ]),
             Row(
                mainAxisAlignment: MainAxisAlignment.center,   crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,14 +241,14 @@ class _SignIn extends State<SignIn> {
               ),
             
                 
-             Text("Don't have an account?",style: TextStyle( color: Color.fromARGB(255,253, 248, 224)),),
+             Text("Don't have an account?",style: TextStyle( color: Color.fromARGB(255,255,255, 255)),),
               
              FlatButton.icon(
               onPressed: () {
                 widget.toggleView();
               },
               icon: Icon(Icons.person_add),
-              label: Text("Register"),textColor: Color.fromARGB(255, 253, 248, 244))
+              label: Text("Register"),textColor: Color.fromARGB(255,255,255, 255))
                ]),
                 
          
